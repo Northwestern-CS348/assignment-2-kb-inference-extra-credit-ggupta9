@@ -145,14 +145,14 @@ class KnowledgeBase(object):
             if fact_or_rule in self.facts:
                 ind = self.facts.index(fact_or_rule)
                 fact_or_rule_2 = self.facts[ind]
-                sentence = self.stringprint('', fact_or_rule_2, 0)
+                sentence = self.print_string('', fact_or_rule_2, 0)
             else:
                 sentence = 'Fact is not in the KB'
         elif isinstance(fact_or_rule,Rule):
             if fact_or_rule in self.rules:
                 ind = self.rules.index(fact_or_rule)
                 fact_or_rule_2 = self.rules[ind]
-                sentence = self.stringprint('', fact_or_rule_2, 0)
+                sentence = self.print_string('', fact_or_rule_2, 0)
             else:
                 sentence = 'Rule is not in the KB'
         else:
@@ -160,7 +160,7 @@ class KnowledgeBase(object):
         print('\n'+ sentence)
         return sentence
 
-    def stringprint(self,phrase,fact_or_rule,level):
+    def print_string(self,phrase,fact_or_rule,level):
 
         if isinstance(fact_or_rule,Fact):
 
@@ -176,8 +176,8 @@ class KnowledgeBase(object):
                 for a in range(4*level):
                     phrase += ' '
                 phrase +='  SUPPORTED BY' + '\n'
-                phrase = self.stringprint(phrase,i[0], level+1)
-                phrase = self.stringprint(phrase,i[1], level+1)
+                phrase = self.print_string(phrase,i[0], level+1)
+                phrase = self.print_string(phrase,i[1], level+1)
             return phrase
 
         elif isinstance(fact_or_rule,Rule):
@@ -201,8 +201,8 @@ class KnowledgeBase(object):
                 for a in range(4*level):
                     phrase += ' '
                 phrase += '  SUPPORTED BY'+'\n'
-                phrase = self.stringprint(phrase, i[0], level+1)
-                phrase = self.stringprint(phrase, i[1], level+1)
+                phrase = self.print_string(phrase, i[0], level+1)
+                phrase = self.print_string(phrase, i[1], level+1)
             return phrase
 
 
