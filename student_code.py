@@ -141,7 +141,69 @@ class KnowledgeBase(object):
             string explaining hierarchical support from other Facts and rules
         """
         ####################################################
-        # Student code goes here
+        if isinstance(fact_or_rule,Fact):
+            if fact_or_rule in self.facts:
+                ind = self.facts.index(fact_or_rule)
+                fact_or_rule_2 = self.facts[ind]
+                sentence = self.stringprint('', fact_or_rule_2, 0)
+            else:
+                sentence = 'Fact is not in the KB'
+        elif isinstance(fact_or_rule,Rule):
+            if fact_or_rule in self.rules:
+                ind = self.rules.index(fact_or_rule)
+                fact_or_rule_2 = self.rules[ind]
+                sentence = self.stringprint('', fact_or_rule_2, 0)
+            else:
+                sentence = 'Rule is not in the KB'
+        else:
+            return False
+        print('\n'+ sentence)
+        return sentence
+
+    def stringprint(self,phrase,fact_or_rule,level):
+
+        if isinstance(fact_or_rule,Fact):
+
+            for i in range(4*level):
+                phrase += ' '
+
+            if fact_or_rule.asserted != False:
+                phrase += 'fact: ' + str(fact_or_rule.statement) + ' ASSERTED' + '\n'
+            else:
+                phrase += 'fact: ' + str(fact_or_rule.statement) + '\n'
+
+            for i in fact_or_rule.supported_by:
+                for a in range(4*level):
+                    phrase += ' '
+                phrase +='  SUPPORTED BY' + '\n'
+                phrase = self.stringprint(phrase,i[0], level+1)
+                phrase = self.stringprint(phrase,i[1], level+1)
+            return phrase
+
+        elif isinstance(fact_or_rule,Rule):
+
+            for i in range(4*level):
+                phrase += ' '
+            phrase += 'rule: ('
+
+            for i in range(len(fact_or_rule.lhs)):
+                if i != 0:
+                    phrase += ', '
+                phrase += str(fact_or_rule.lhs[i])
+            phrase += ') -> ' + str(fact_or_rule.rhs)
+
+            if fact_or_rule.asserted == True:
+                phrase += ' ASSERTED' + '\n'
+            else:
+                phrase+= '\n'
+
+            for i in fact_or_rule.supported_by:
+                for a in range(4*level):
+                    phrase += ' '
+                phrase += '  SUPPORTED BY'+'\n'
+                phrase = self.stringprint(phrase, i[0], level+1)
+                phrase = self.stringprint(phrase, i[1], level+1)
+            return phrase
 
 
 class InferenceEngine(object):
@@ -154,7 +216,7 @@ class InferenceEngine(object):
             kb (KnowledgeBase) - A KnowledgeBase
 
         Returns:
-            Nothing            
+            Nothing
         """
         printv('Attempting to infer from {!r} and {!r} => {!r}', 1, verbose,
             [fact.statement, rule.lhs, rule.rhs])
